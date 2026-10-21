@@ -1,0 +1,90 @@
+UFC 2 (PS4) - port nativo para PC - suporte a CPUs legadas
+==========================================================
+
+O que e
+-------
+O UFC 2 nao foi lancerado oficialmente no PC. O port nativo (SacredFire/bbport,
+derivado do port do Bloodborne) roda o codigo original do PS4 direto na CPU do
+PC, traduzindo o grafico para Vulkan.
+
+Esse codigo foi compilado para a CPU do PS4 e usa instrucoes que existem em
+CPUs Haswell (4a geracao, 2013) ou mais novas:
+
+    BMI1   (andn, bextr, blsr, blsi, blsmsk, tzcnt)
+    LZCNT  (contagem de zeros a esquerda)
+    MOVBE  (movimento big-endian)
+
+Em CPUs mais antigas (Intel Sandy/Ivy Bridge, Xeon E3 v1/v2, AMD pre-Zen) o
+jogo aborta com STATUS_ILLEGAL_INSTRUCTION (0xC000001D) logo no boot.
+
+Este instalador traduz essas instrucoes para codigo equivalente que a sua CPU
+entende, no momento em que a imagem do jogo e montada (link-time). O jogo
+continua rodando nativamente, sem emulacao de CPU.
+
+Requisitos
+----------
+* Windows 10 (1903+) ou 11, 64 bits
+* CPU Intel Sandy Bridge / Ivy Bridge (ou outra sem BMI1/LZCNT/MOVBE)
+* Placa de video com Vulkan 1.3 (NVIDIA, AMD ou Intel Arc)
+* O port do UFC 2 (SacredFire) instalado e o SEU dump do jogo (CUSA01968,
+  update 1.13) ja apontado no launcher
+
+Como usar
+---------
+1. Extraia esta pasta em qualquer lugar (fora da pasta do jogo e fora do OneDrive)
+2. Feche o launcher do jogo
+3. Clique duas vezes em  instalar.bat
+   (pode passar o caminho do port como argumento:
+    instalar.bat "D:\UFC 2\PORTHEON")
+4. Abra o launcher do jogo de novo e jogue
+
+O que o instalador faz
+----------------------
+ 1. localiza o port do UFC 2 e a pasta do seu dump
+ 2. le o CPUID: se a sua CPU ja suporta tudo, ele avisa e nao altera nada
+ 3. cria um backup do link_modules.py original (nunca sobrescreve esse backup)
+ 4. copia cpu_compat.py e build_cpu_compat.py para o port
+ 5. insere os ganchos de traducao no link_modules.py (pode rodar varias vezes)
+ 6. instala capstone e keystone-engine no Python embutido do port (precisa de
+    internet na primeira vez)
+ 7. gera o plano de traducao a partir do SEU dump e exige cobertura total
+ 8. refaz o link da imagem do jogo e confere o resultado
+ 9. define BB_SKIP_CPU_CHECK=1 no seu usuario (necessario: o launcher do port
+    recusa CPUs antigas antes de o patch entrar em acao)
+
+Desfazer
+--------
+Rode  desinstalar.bat : restaura o link_modules.py original, remove as
+ferramentas e apaga a variavel de ambiente.
+
+Diagnostico
+-----------
+* Logs do jogo: %LOCALAPPDATA%\UFC2Native\logs (o launcher tem um botao
+  "Abrir logs")
+* Se o jogo nao abrir, envie o log mais novo junto com o conteudo de
+  %LOCALAPPDATA%\UFC2Native\out\link.json (campo "cpu_compat")
+
+Aviso legal
+-----------
+Este pacote NAO contem arquivos do jogo: o codigo-fonte do jogo, os textos, os
+modelos e os videos continuam sendo usados a partir do SEU dump, na sua
+maquina. O plano de traducao tambem e gerado localmente, a partir do seu
+proprio dump, e nunca e distribuido.
+
+O jogo e uma obra da Electronic Arts; o port nao e afiliado nem endossado pela
+EA, pela Sony ou pela UFC. Use apenas dumps dos quais voce tem a licenca.
+
+Creditos e licenca
+------------------
+* Port base: SacredFire/bbport e o projeto UFC-3-PS4-PORT-LINUX-WINDOWS
+  (GNSB), GPL-2.0-or-later
+* Traducao para CPUs legadas: PR #48 de deanzx06 no repositorio do UFC 3
+  (UFC-3-PS4-PORT-LINUX-WINDOWS), que se baseou no trabalho de
+  T0ug (bloodborne_pc_Ivy-Bridge) e Supermedo
+* Correcoes neste pacote: o registro de endereco de operandos de memoria nao
+  era isolado durante a traducao (a traducao destruia o proprio endereco de
+  memoria que ia ler) e as flags CF/ZF de blsr/blsmsk com fonte zero
+  estavam erradas - os dois problemas foram observados e corrigidos nesta
+  instalacao, com o jogo rodando estavel em i7-3770 + RX 580 8GB
+
+Codigo sob GPL-2.0-or-later, igual aos projetos de origem.

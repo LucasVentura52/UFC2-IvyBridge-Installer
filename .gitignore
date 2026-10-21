@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Planos de traducao (gerados no dump do usuario; nunca versionados)
+legacy-cpu-plan.json
+legacy-cpu-plan.json.xz
+tools/legacy-cpu-plan*.json*
+
+# Artefatos do port / do jogo
+out/
+logs/
+*.log
+boot-linked.bin
+boot.bin
+eboot.bin
+*.prx
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp
