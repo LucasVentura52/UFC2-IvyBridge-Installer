@@ -1,6 +1,9 @@
 UFC 2 (PS4) - port nativo para PC - suporte a CPUs legadas
 ==========================================================
 
+Repositorio: https://github.com/LucasVentura52/UFC2-IvyBridge-Installer
+Release 1.0.0: https://github.com/LucasVentura52/UFC2-IvyBridge-Installer/releases
+
 O que e
 -------
 O UFC 2 nao foi lancerado oficialmente no PC. O port nativo (SacredFire/bbport,

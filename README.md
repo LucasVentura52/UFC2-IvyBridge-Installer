@@ -61,7 +61,7 @@ No dump do UFC 2 (`CUSA01968`, update 1.13) isso dá **3.184 pontos de traduçã
 1. Baixe o [zip release](https://github.com/LucasVentura52/UFC2-IvyBridge-Installer/releases) e extraia
    em qualquer lugar (fora da pasta do jogo e fora do OneDrive);
 2. **Feche** o launcher do jogo;
-3. Clique duas vezes em **`instalar.bat`**
+3. Clique duas vezes em **`instalar.bat`** (ou `install.bat`, em ingles)
    (ou passe o caminho do port: `instalar.bat "D:\UFC 2\PORTHEON"`);
 4. Abra o launcher de novo e jogue.
 
